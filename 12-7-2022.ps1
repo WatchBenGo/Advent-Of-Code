@@ -1,4 +1,4 @@
-﻿$Commands = Get-Content "C:\Users\bsiebers\Documents\Personal\Advent of Code\FileSystem.txt"
+﻿$Commands = Get-Content .\FileSystem.txt
 $FileSizes = @()
 
 $CurrentPath = ""
@@ -30,7 +30,6 @@ ForEach($Line in $Commands) {
         Else {
             $Line -match "^(?<Size>\d+)\s(?<Filename>.*)$" | Out-Null
             $FileSizes += $Matches.Size
-
             $TempPath = $CurrentPath + "/"
             $ParentDirs = @()
             while($TempPath.Length -gt 1){
@@ -48,7 +47,7 @@ ForEach($Line in $Commands) {
 
 #Part 1
 $Sum = 0
-$Directories.GetEnumerator() | where {$_.Value -le 100000} | % {$Sum += $_.Value}  
+$Directories.GetEnumerator() | Where-Object {$_.Value -le 100000} | ForEach-Object {$Sum += $_.Value}  
 Write-Host $Sum
 
 #Part 2
@@ -59,6 +58,6 @@ ForEach($Row in $FileSizes) {
 
 $Free = 70000000 - $RootSum
 $Needed = 30000000 - $Free
-$Remove = $Directories.GetEnumerator() | where {$_.Value -ge $Needed} | Sort-Object -Property Value | Select-Object -First 1
+$Remove = $Directories.GetEnumerator() | Where-Object {$_.Value -ge $Needed} | Sort-Object -Property Value | Select-Object -First 1
 
 Write-Host $Remove.Value
