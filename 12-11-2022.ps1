@@ -1,25 +1,26 @@
-#https://github.com/kirkhofer/adventofcode/blob/main/2022/day11/posh/day11.ps1
-$Import = Get-Content .\Monkeys.txt
-
-$Monkeys= @()
+$Import = Get-Content 'C:\Users\bsiebers\Documents\Personal\Advent of Code\Monkeys.txt'
+$Monkeys= [System.Collections.ArrayList]@()
 
 ForEach ($Line in $Import) {
     Switch -Regex ($Line) {
         "Monkey (?<Number>.*):" {
             $Monkey = [PSCustomObject] @{
                 ID = $Matches.Number
-                Items = @()
-                Throws = @()
+                Items = [System.Collections.ArrayList]@()
+                Throws = [System.Collections.ArrayList]@()
                 Opp = ""
                 Test = ""
                 True = ""
                 False = ""
                 Inspections = 0
             }
-            $Monkeys += $Monkey
+            $Monkeys.Add($Monkey) | Out-Null
         }
         "^\s\sStarting items: (?<Items> *.*)" {
-            $Monkey.Items = (($Matches.Items) -replace '\s','').Split(",")
+            $Store = (($Matches.Items) -replace '\s','').Split(",")
+            ForEach ($Entry in $Store) {
+                $Monkey.Items.Add([Int]$Entry) | Out-Null
+            }
         }
         "^\s\sOperation: new = (?<Opp> *.*)" {
             $Monkey.Opp = ($Matches.Opp).Replace("old","{0}")
@@ -35,59 +36,37 @@ ForEach ($Line in $Import) {
         }
     }
 }
-$Monkeys
+$Monkeys | FT
 
-$runs=($monkeys|%{$_.items.count}|Measure-Object -Sum).Sum
-$ix=1
-while( $runs -gt 0 -and $ix -le 20)
-{
-    foreach($monkey in $monkeys)
-    {
-        Write-Host "Monkey $($monkey.id)"
-        $level=0
-        foreach($item in $monkey.items+$monkey.throws)
-        {
-            $monkey.inspections++
+For ($I = 1; $I -le 20; $I ++) {
+    ForEach ($Monkey in $Monkeys) {
+        ForEach ($Item in $Monkey.Items) {
+            $Monkey.Inspections++
+            $Level = Invoke-Expression ($Monkey.Opp -F $Item)
+            $Level = [Math]::Floor($Level/3)
 
-            Write-Host "`t$item"
-            $level = Invoke-Expression ($monkey.opp -f $item)
-            Write-Host "`tLevel=$level"
+            If ($Level % $Monkey.Test) {
+                #False
+                #Write-Host "$($Monkey.ID) Throws $Item to $($Monkey.False)"
+                $Monkeys[$Monkey.False].Items.Add($Level) | Out-Null
+                #$Monkey.Items.RemoveAt($Monkey.Items.Count - 1 )
 
-            $level = [math]::floor($level / 3)
-            Write-Host "`tLevel2=$level"
+            } Else {
+                #True
+                #Write-Host "$($Monkey.ID) Throws $Item to $($Monkey.True)"
+                $Monkeys[$Monkey.True].Items.Add($Level) | Out-Null
+                #$Monkey.Items.RemoveAt($Monkey.Items.Count - 1 )
 
-            $rs = $level % $monkey.test
-            Write-Host $("`trt={0} % {1}" -f $level,$monkey.test)
-            Write-Host "`trs=$rs"
-            if( $rs -eq 0 )
-            {
-                Write-Host "`tThrow to $($monkey.True)"
-                if( $monkey.id -lt $monkey.True )
-                {
-                    $monkeys[$monkey.True].items+=$level
-                }
-                else
-                {
-                    $monkeys[$monkey.True].throws+=$level
-                }
-                
             }
-            else
-            {
-                if( $monkey.id -lt $monkey.False )
-                {
-                    $monkeys[$monkey.False].items+=$level
-                }
-                else
-                {
-                    $monkeys[$monkey.False].throws+=$level
-                }
-            }
+
         }
+        $Monkey.Items.Clear()
+        
     }
-    foreach($monkey in $monkeys){$monkey.items=$monkey.throws;$monkey.throws=@()}
-    $runs=($monkeys|%{$_.items.count}|Measure-Object -Sum).Sum
-    $ix++
+    Write-Host "End of Round $I" -ForegroundColor Yellow
+    $Monkeys | FT
+    Pause
 }
-$top2=($monkeys|select id,inspections|sort-object inspections -desc|select -first 2)
-Write-Host ("Answer 1: {0}" -f $top2[0].inspections*$top2[1].inspections)
+
+$Top2 = $Monkeys | Sort Inspections -Descending | Select -ExpandProperty Inspections -First 2
+$Multiply = $Top2[0] * $Top2[1]
