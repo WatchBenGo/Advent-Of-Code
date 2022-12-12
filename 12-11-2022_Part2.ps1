@@ -36,12 +36,12 @@ ForEach ($Line in $Import) {
     }
 }
 
-For ($I = 1; $I -le 20; $I ++) {
+For ($I = 1; $I -le 10000; $I ++) {
     ForEach ($Monkey in $Monkeys) {
         ForEach ($Item in $Monkey.Items) {
             $Monkey.Inspections++
             $Level = Invoke-Expression ($Monkey.Opp -F $Item)
-            $Level = [Math]::Floor($Level/3)
+            #$Level = [Math]::Floor($Level/3)
 
             If ($Level % $Monkey.Test) {
                 $Monkeys[$Monkey.False].Items.Add($Level) | Out-Null

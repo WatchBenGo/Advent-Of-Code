@@ -1,0 +1,1 @@
+$Map = Get-Content .\Map.txt
