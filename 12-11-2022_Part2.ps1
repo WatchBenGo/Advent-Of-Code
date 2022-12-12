@@ -1,4 +1,4 @@
-$Import = Get-Content .\Monkeys.txt
+$Import = Get-Content 'C:\Users\bsiebers\Documents\Personal\Advent of Code\Monkeys.txt'
 $Monkeys= [System.Collections.ArrayList]@()
 
 ForEach ($Line in $Import) {
@@ -36,12 +36,15 @@ ForEach ($Line in $Import) {
     }
 }
 
+$LCM = $Monkeys.Test -join '*' | Invoke-Expression
+
 For ($I = 1; $I -le 10000; $I ++) {
     ForEach ($Monkey in $Monkeys) {
         ForEach ($Item in $Monkey.Items) {
             $Monkey.Inspections++
             $Level = Invoke-Expression ($Monkey.Opp -F $Item)
             #$Level = [Math]::Floor($Level/3)
+            $Level = $Item % $LCM
 
             If ($Level % $Monkey.Test) {
                 $Monkeys[$Monkey.False].Items.Add($Level) | Out-Null
@@ -57,3 +60,5 @@ For ($I = 1; $I -le 10000; $I ++) {
 $Top2 = $Monkeys | Sort Inspections -Descending | Select -ExpandProperty Inspections -First 2
 $Multiply = $Top2[0] * $Top2[1]
 $Multiply
+
+#13409993912 - Wrong
