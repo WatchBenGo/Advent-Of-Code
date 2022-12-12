@@ -1,5 +1,5 @@
 $Data = Get-Content .\Rope.txt
-$CountKnots = 2
+$CountKnots = 10
 $Knots = 1..$CountKnots | ForEach { , @(0, 0) }
 $History = [System.Collections.ArrayList]@()
 $History.Add("$($Knots[1][0]) $($Knots[1][1])") | Out-Null

@@ -52,7 +52,6 @@ For ($I = 1; $I -le 20; $I ++) {
 
         }
         $Monkey.Items.Clear()
-        
     }
 }
 
