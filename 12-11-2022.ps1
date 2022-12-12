@@ -36,7 +36,6 @@ ForEach ($Line in $Import) {
         }
     }
 }
-$Monkeys | FT
 
 For ($I = 1; $I -le 20; $I ++) {
     ForEach ($Monkey in $Monkeys) {
@@ -46,27 +45,17 @@ For ($I = 1; $I -le 20; $I ++) {
             $Level = [Math]::Floor($Level/3)
 
             If ($Level % $Monkey.Test) {
-                #False
-                #Write-Host "$($Monkey.ID) Throws $Item to $($Monkey.False)"
                 $Monkeys[$Monkey.False].Items.Add($Level) | Out-Null
-                #$Monkey.Items.RemoveAt($Monkey.Items.Count - 1 )
-
             } Else {
-                #True
-                #Write-Host "$($Monkey.ID) Throws $Item to $($Monkey.True)"
                 $Monkeys[$Monkey.True].Items.Add($Level) | Out-Null
-                #$Monkey.Items.RemoveAt($Monkey.Items.Count - 1 )
-
             }
 
         }
         $Monkey.Items.Clear()
         
     }
-    Write-Host "End of Round $I" -ForegroundColor Yellow
-    $Monkeys | FT
-    Pause
 }
 
 $Top2 = $Monkeys | Sort Inspections -Descending | Select -ExpandProperty Inspections -First 2
 $Multiply = $Top2[0] * $Top2[1]
+$Multiply
