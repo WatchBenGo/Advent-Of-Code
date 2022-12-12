@@ -1,4 +1,4 @@
-$Import = Get-Content 'C:\Users\bsiebers\Documents\Personal\Advent of Code\Monkeys.txt'
+$Import = Get-Content .\Monkeys.txt
 $Monkeys= [System.Collections.ArrayList]@()
 
 ForEach ($Line in $Import) {
