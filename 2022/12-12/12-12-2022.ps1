@@ -5,14 +5,14 @@ $MaxY = $lines.Count - 1
 $NeighborsPatterns = '[[-1,0],[0,-1],[0,1],[1,0]]' | ConvertFrom-Json
 
 $Map = [Collections.Generic.Dictionary[String,hashtable]]::New()
-$Map.EnsureCapacity(($MaxX + 1)*($MaxY + 1))
+$Map.EnsureCapacity(($MaxX + 1)*($MaxY + 1)) | Out-Null
 
 For ($Y = 0; $Y -lt $Lines.Count; $Y++) {
     For ($X = 0; $X -lt $Lines[0].Length; $X++) {
         $Key = "$X,$Y"
         $Height = $Lines[$Y][$X]
         If ($Height -ceq 'E') {
-            $Height = [Char]'a'
+            $Height = [Char]'z' ###### a or z?
             $StartKey = $Key
         } ElseIf ($Height -ceq 'S') {
             $Height = [Char]'z'
@@ -61,10 +61,18 @@ $Seen = @{}
 While ($Queue.Count -gt 0) {
     $U = $Queue.Dequeue()
 
+    #Part 1
     If ($U.Key -eq $EndKey) {
         $U.Distance
         Break
     }
+    #>
+    <#Part 2
+    If ($U.Height -eq 'a') {
+        $U.Distance
+        Break
+    }
+    #>
 
     If ($Seen.ContainsKey($U.Key)) {
         Continue
