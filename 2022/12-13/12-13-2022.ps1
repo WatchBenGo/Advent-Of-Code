@@ -1,3 +1,5 @@
+#Cleaned up from - https://www.reddit.com/r/PowerShell/comments/zkxotc/advent_of_code_2022_day_13_distress_signal/j079wte/
+
 $Queue = [System.Collections.Queue]
 Function ConvertFrom-Text {
     param (
