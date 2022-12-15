@@ -5,20 +5,22 @@ $CaveMap = [System.Collections.ArrayList]@()
 #Max X = 518        Min X = 368
 #Max y = 165        Min Y = 13
 
+#0-170
 1..170 | ForEach-Object {
     $Row = [System.Collections.ArrayList]@()
-    1..520 | ForEach-Object {
+    #360-520
+    1..160 | ForEach-Object {
         $Row.Add('.') | Out-Null
     }
     $CaveMap.Add($Row) | Out-Null
 }
 
 $Start = "500,0"
-#$Offset = 494
+$XOffset = [Int]360
 
 $StartX,$StartY = $Start.Split(',')
 
-$CaveMap[$StartY][$StartX] = '+'
+$CaveMap[$StartY][$StartX - $XOffset] = '+'
 
 #Draw Cave
 ForEach ($Object in $CaveScan) {
@@ -29,7 +31,7 @@ ForEach ($Object in $CaveScan) {
          [Int]$PointX,[Int]$PointY = $Points[$Point - 1].Split(',')
         If ($Point -eq 1) {
             #Start
-            $CaveMap[$PointY][$PointX] = '#'
+            $CaveMap[$PointY][$PointX - $XOffset] = '#'
         }  Else {
             #Compare with Previous (Up+Down or Left+Right)
             [Int]$PrevX,[Int]$PrevY = $Points[$Point - 2].Split(',')
@@ -38,13 +40,13 @@ ForEach ($Object in $CaveScan) {
                 If ($PointY -gt $PrevY) {
                     #Draw Up
                     While ($PointY -gt $PrevY) {
-                        $CaveMap[$PointY][$PointX] = '#'
+                        $CaveMap[$PointY][$PointX - $XOffset] = '#'
                         $PointY--
                     }
                 } Else {
                     #Draw Down
                     While ($PointY -lt $PrevY) {
-                        $CaveMap[$PointY][$PointX] = '#'
+                        $CaveMap[$PointY][$PointX - $XOffset] = '#'
                         $PointY++
                     }
                 }
@@ -53,13 +55,13 @@ ForEach ($Object in $CaveScan) {
                 If ($PointX -gt $PrevX) {
                     #Draw Left
                     While ($PointX -gt $PrevX) {
-                        $CaveMap[$PointY][$PointX] = '#'
+                        $CaveMap[$PointY][$PointX - $XOffset] = '#'
                         $PointX--
                     }
                 } Else {
                     #Draw Right
                     While ($PointX -lt $PrevX) {
-                        $CaveMap[$PointY][$PointX] = '#'
+                        $CaveMap[$PointY][$PointX - $XOffset] = '#'
                         $PointX++
                     }
                 }
@@ -71,15 +73,11 @@ ForEach ($Object in $CaveScan) {
 }
 
 #DisplayCave
-#$Display = @()
-
 ForEach ($Line in $CaveMap) {
     ForEach ($Space in $Line) {
         Write-Host "$Space" -NoNewline
-        #$Display += $Space
     }
     Write-Host ""
-    #$Display += "`r`n"
 }
 
 Function Drop-Sand {
