@@ -58,9 +58,9 @@ Function Compare-Items {
     }
   }
 
-$Pairs = Get-Content C:\Users\bsiebers\Desktop\Input.txt
+$Pairs = Get-Content .\2022\12-13\Input.txt
 
-Remove-Variable -ErrorAction SilentlyContinue $X,$Y
+Remove-Variable -ErrorAction SilentlyContinue X,Y
 $n = 0
 $Catch = switch($Pairs) {
     { $_ -and -not $x} {
@@ -76,7 +76,7 @@ $Catch = switch($Pairs) {
             b = $y
             r = Compare-Items $a $b
         }
-        Remove-Variable $X,$Y
+        Remove-Variable X,Y
     }
 }
 
