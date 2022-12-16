@@ -19,7 +19,7 @@ $XMax = $XCoords.Values | Sort-Object | Select-Object -Last 1
 $XMin = $XCoords.Values | Sort-Object | Select-Object -First 1
 $YMax = $YCoords.Values | Sort-Object | Select-Object -Last 1 
 
-$XSize = $XMax - $XMin + 3
+$XSize = $XMax - $XMin + 200
 $YSize = $YMax + 2
 
 1..$YSize | ForEach-Object {
@@ -30,8 +30,14 @@ $YSize = $YMax + 2
     $CaveMap.Add($Row) | Out-Null
 }
 
+$Row = [System.Collections.ArrayList]@()
+1..$XSize | ForEach-Object {
+    $Row.Add('#') | Out-Null
+}
+$CaveMap.Add($Row) | Out-Null
+
 $Start = "500,0"
-$XOffset = $XMin - 1
+$XOffset = $XMin - 40
 
 $StartX,$StartY = $Start.Split(',')
 $CaveMap[$StartY][$StartX - $XOffset] = '+'
@@ -98,7 +104,7 @@ Function Display-Cave {
     }
 }
 
-$Overflow = 100
+$Overflow = 100000
 $Count = 0
 $Done = $False
 
@@ -110,7 +116,9 @@ $Done = $False
 
     While ($Falling) {
         Try {
-            If ($CaveMap[$Y + 1][$X] -eq '.') {
+            If ($CaveMap[$Y][$X] -eq 'o') {
+                Break Outer
+            } ElseIf ($CaveMap[$Y + 1][$X] -eq '.') {
                 $Y++
             } ElseIf ($CaveMap[$Y + 1][$X - 1] -eq '.') {
                 $X--
@@ -123,10 +131,10 @@ $Done = $False
                 $Count++
                 $CaveMap[$Y][$X] = 'o'
             }
+
         } Catch {
             Break Outer
         }
     }
 }
-
 $Count
