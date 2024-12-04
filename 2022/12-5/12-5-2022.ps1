@@ -1,5 +1,5 @@
-﻿$Data = Get-Content C:\Users\bsiebers\Desktop\Stacks.txt
-$Moves = Import-Csv C:\Users\bsiebers\Desktop\Moves.csv
+﻿$Data = Get-Content .\2022\12-5\Stacks.txt
+$Moves = Import-Csv .\2022\12-5\Moves.csv
 
 $Stacks = [System.Collections.ArrayList]@()
 

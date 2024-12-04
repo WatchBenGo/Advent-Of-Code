@@ -1,4 +1,4 @@
-﻿$Commands = Get-Content .\FileSystem.txt
+﻿$Commands = Get-Content .\2022\12-7\FileSystem.txt
 $FileSizes = @()
 
 $CurrentPath = ""

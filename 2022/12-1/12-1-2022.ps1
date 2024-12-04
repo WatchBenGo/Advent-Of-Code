@@ -1,5 +1,5 @@
 ﻿#First Part
-$Numbers = Get-Content 'C:\Users\bsiebers\Documents\Personal\Advent of Code\Numbers.txt'
+$Numbers = Get-Content .\2022\12-1\Numbers.txt
 $Max = 0
 
 
@@ -17,7 +17,7 @@ $Max
 
 
 #Second Part
-$Numbers = Get-Content 'C:\Users\bsiebers\Documents\Personal\Advent of Code\Numbers.txt'
+$Numbers = Get-Content .\2022\12-1\Numbers.txt
 $Max = 0
 $Totals = @()
 

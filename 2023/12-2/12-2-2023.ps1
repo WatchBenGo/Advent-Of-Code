@@ -1,4 +1,4 @@
-$Data = Get-Content "C:\Users\bsiebers\OneDrive - Epic\Documents\Personal\Advent of Code\2023\12-2\Data.txt"
+$Data = Get-Content .\2023\12-2\Data.txt
 
 $MaxRed = "12"
 $MaxGreen = "13"

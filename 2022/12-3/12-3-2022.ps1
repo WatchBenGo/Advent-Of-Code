@@ -1,4 +1,4 @@
-﻿$Data = Get-Content C:\Users\Ben\Desktop\Data.txt
+﻿$Data = Get-Content .\2022\12-3\Data.txt
 
 $Total = 0
 

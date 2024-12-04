@@ -1,4 +1,4 @@
-﻿$Pairs = Import-Csv C:\Users\Ben\Desktop\CleaningPairs.csv
+﻿$Pairs = Import-Csv .\2022\12-4\CleaningPairs.csv
 $FullOverlaps = 0
 
 

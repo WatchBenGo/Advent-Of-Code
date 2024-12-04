@@ -11,7 +11,7 @@
 #(0 if you lost, 3 if the round was a draw, and 6 if you won)
 
 
-$Data = Import-Csv C:\Users\Ben\Desktop\Input.csv
+$Data = Import-Csv .\2022\12-2\Input.csv
 $TotalScore = 0
 
 ForEach ($Round in $Data) {

@@ -1,4 +1,4 @@
-﻿$Data = Import-Csv C:\Users\Ben\Desktop\Data.csv
+﻿$Data = Import-Csv .\2022\12-3\Data.csv
 
 $Total = 0
 
